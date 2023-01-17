@@ -16,12 +16,10 @@
 
 import time
 import paho.mqtt.client as mqtt
-from adafruit_motorkit import MotorKit
 # if you're using an Adafruit Crickit hat, uncomment the line below and comment out the statement above:
 # from adafruit_crickit import crickit
 # NOTE: The line below is needed if you're using the Waveshare Motor Driver Hat
 # comment out this line if you're using a Crickit
-kit = MotorKit(0x40)
 # Also, only if using the Waveshare Motor Driver Hat, be sure you've installed
 # and modified CircuitPython files, in particular the file at:
 # /usr/local/lib/python3.5/dist-packages/adafruit_motorkit.py
@@ -46,14 +44,8 @@ didPrintSubscribeMessage = False
 # until the bot moves roughly straight. The #s below reflect the bot I'm working with.
 # It's probably best to start both trim values at 0 and adjust from there.
 # out of 1.0 full power.
-LEFT_TRIM = 0.0
-RIGHT_TRIM = 0.0
-
-leftSpeed = 1.0 + LEFT_TRIM
-rightSpeed = 1.0 + RIGHT_TRIM
 
 # This will make turns at 50% of the speed of fwd or backward
-slowTurnBy = 0.5
 
 
 def connectionStatus(client, userdata, flags, rc):
@@ -69,29 +61,15 @@ def messageDecoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
 
     if message == "forward":
-        kit.motor1.throttle = rightSpeed
-        kit.motor2.throttle = leftSpeed
         print("^^^ moving forward! ^^^")
-        print(leftSpeed, rightSpeed)
     elif message == "stop":
-        kit.motor1.throttle = 0.0
-        kit.motor2.throttle = 0.0
         print("!!! stopping!")
     elif message == "backward":
-        kit.motor1.throttle = -rightSpeed
-        kit.motor2.throttle = -leftSpeed
         print("\/ backward \/")
-        print(-leftSpeed, -rightSpeed)
     elif message == "left":
-        kit.motor1.throttle = rightSpeed * slowTurnBy
-        kit.motor2.throttle = -leftSpeed * slowTurnBy
         print("<- left")
-        print(-leftSpeed * slowTurnBy, rightSpeed * slowTurnBy)
     elif message == "right":
-        kit.motor1.throttle = -rightSpeed * slowTurnBy
-        kit.motor2.throttle = leftSpeed * slowTurnBy
         print("-> right")
-        print(leftSpeed * slowTurnBy, -rightSpeed * slowTurnBy)
     else:
         print("message not found")
 
