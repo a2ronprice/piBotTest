@@ -14,7 +14,6 @@
 # To stop the robot:
 # mosquitto_pub -h mil-mascaras.local -t "pibot/move" -m "stop"
 
-import pygame
 import time
 import paho.mqtt.client as mqtt
 from adafruit_motorkit import MotorKit
@@ -56,15 +55,6 @@ rightSpeed = 1.0 + RIGHT_TRIM
 # This will make turns at 50% of the speed of fwd or backward
 slowTurnBy = 0.5
 
-# setup startup sound. Make sure you have a sounds
-# folder with a sound named startup.mp3
-fileLocation = "/home/pi/sounds/"
-pygame.mixer.init()
-pygame.mixer.music.load(fileLocation + "startup.mp3")
-speakerVolume = ".50"  # initially sets speaker at 50%
-pygame.mixer.music.set_volume(float(speakerVolume))
-pygame.mixer.music.play()
-
 
 def connectionStatus(client, userdata, flags, rc):
     global didPrintSubscribeMessage
@@ -102,15 +92,8 @@ def messageDecoder(client, userdata, msg):
         kit.motor2.throttle = leftSpeed * slowTurnBy
         print("-> right")
         print(leftSpeed * slowTurnBy, -rightSpeed * slowTurnBy)
-    elif message.startswith("Vol="):
-        speakerVolume = message[4:]
-        pygame.mixer.music.set_volume(float(speakerVolume))
     else:
-        print("Playing sound at: " + fileLocation + message + ".mp3")
-        pygame.mixer.music.stop()
-        # assumes you have a file$
-        pygame.mixer.music.load(fileLocation + message + ".mp3")
-        pygame.mixer.music.play()
+        print("message not found")
 
 
 # Set up calling functions to mqttClient
