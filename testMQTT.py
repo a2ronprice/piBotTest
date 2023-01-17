@@ -35,7 +35,7 @@ clientName = "PiBot"
 # *** IMPORTANT ***
 # This is your pi's host name. If your name is something different than
 # mil-mascaras, then be sure to change it, here - make it the name of your Pi
-serverAddress = "http://10.194.2.2/"
+serverAddress = "10.194.2.2"
 mqttClient = mqtt.Client(clientName)
 # Flag to indicate subscribe confirmation hasn't been printed yet.
 didPrintSubscribeMessage = False
