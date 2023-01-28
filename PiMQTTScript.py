@@ -32,7 +32,7 @@ def messageDecoder(client, userdata, msg):
         print("-> right")
     elif message == "drop":
         print("drop")
-        ser.write(b"drop\n")
+        ser.write(b"drop")
     else:
         print("message not found")
 
